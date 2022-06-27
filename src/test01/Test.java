@@ -7,9 +7,9 @@ import java.util.Stack;
 public class Test {
 
 	static String firstText = "안녕하세요. 점심 식사는 하셨나요?";
-	// 실행 취소 시 불러오기 위한 스택 - edit 실행 시마다 쌓음
+	// 실행 취소 스택 - edit 실행 시마다 쌓음
 	static Stack<String> undo_stack = new Stack<String>();
-	// 재실행 시 불러오기 위한 스택 - undo 실행 시마다 쌓음 
+	// 재실행 스택 - undo 실행 시마다 쌓음 
 	static Stack<String> redo_stack = new Stack<String>();
 	
 	
@@ -38,18 +38,14 @@ public class Test {
 				
 				// 입력받은 값에 괄호기호()가 포함되어 있는지 확인
 				if(inputText.contains("(") && inputText.contains(")")) {
-					System.out.println("정상 명령어 입니다.");
 					String edit_condition = inputText.substring(inputText.indexOf("(") + 1 , inputText.lastIndexOf(")"));
 					
 					// 입력받은 값에 조건이 비어있는지 확인
 					if(edit_condition != null && edit_condition != "") {
-						System.out.println("조건이 비어있지 않음");
 						String[] split_codition = edit_condition.split(",");
 						
 						// 입력받은 조건의 개수가 3개인지 확인
-						if(split_codition.length == 3) {
-							System.out.println("조건 개수 만족");
-							
+						if(split_codition.length == 3) {							
 							
 							// 입력 받은 1번째와 2번째 조건이 숫자인지 확인 + 앞뒤 공백 제거
 							try {
@@ -80,7 +76,7 @@ public class Test {
 							}
 							
 						}else {
-							System.out.println("1번째, 2번째, 3번째 조건들 사이에 콤마(,)를 입력해주세요");
+							System.out.println("조건의 개수가 맞지 않습니다. 조건을 확인해 주시고 조건들 사이에 콤마(,)를 입력해주세요");
 							String peek_message = undo_stack.peek();
 							System.out.println(peek_message);
 						
@@ -118,10 +114,11 @@ public class Test {
 				scn.close();
 				break;
 			
+			// 편집기 사용 방법에 대한 안내
 			}else if(inputText.equals("list()")) {
 				System.out.println("====================사용법====================");
 				System.out.println("문자열 번호 : 문자열 번호는 0부터 시작하며 특수문자와 띄어쓰기도 하나의 번호로 간주합니다.");
-				System.out.println("예시 : 안녕하세요. 점심 식사는 하셨나요? 는 총 0~18 까지의 번호를 가지고 있습니다.");				
+				System.out.println("예시 : 안녕하세요. 점심 식사는 하셨나요? 는 총 0 ~ 18 까지의 번호를 가지고 있습니다.");				
 				System.out.println("편집 : edit( 바꿀 문자열 시작 번호, 바꿀 문자열 끝 번호 + 1, \"변경할 문자열 입력\")");
 				System.out.println("실행 취소 : undo()  -  작업 전단계로 돌아갑니다.");
 				System.out.println("재실행 : redo()  -  실행 취소 전단계로 돌아갑니다.");
@@ -155,6 +152,13 @@ public class Test {
 			try {
 				sb.replace(x, y, change_text);
 				
+				// undo() 실행 후 edit 실행 시 새롭게 편집하는 부분이기 때문에 재실행에 담겨있는 자료는 필요가 없음 따라서 edit시 재실행 스택을 확인하고 0보다 크면 삭제해준다 
+				if(redo_stack.size() > 0) {
+					for(int i = 0; i < redo_stack.size(); i++) {
+						redo_stack.pop();
+					}
+				}		
+				
 			}catch(StringIndexOutOfBoundsException e) {
 				System.out.println("1번째 조건의 숫자는 문자열의 길이보다 클 수 없습니다. 다시 입력해주세요.");
 			
@@ -177,6 +181,7 @@ public class Test {
 	// 실행 취소를 위한 메서드
 	public static void undo() {
 		
+		// 스택이 비어있는지 확인하는 예외처리
 		try {
 			String undo_pop = undo_stack.pop();
 			redo_stack.push(undo_pop);
@@ -194,6 +199,7 @@ public class Test {
 	// 재실행 위한 메서드
 	public static void redo() {
 		
+		// 스택이 비어있는지 확인하는 예외처리
 		try {
 			String redo_pop = redo_stack.pop();
 			undo_stack.push(redo_pop);
