@@ -120,7 +120,7 @@ public class Test {
 			
 			}else if(inputText.equals("list()")) {
 				System.out.println("====================사용법====================");
-				System.out.println("문자열 번호 : 문자열 번호는 0부터 시작하며 특수문자와 띄워쓰기도 하나의 번호로 인식합니다.");
+				System.out.println("문자열 번호 : 문자열 번호는 0부터 시작하며 특수문자와 띄어쓰기도 하나의 번호로 간주합니다.");
 				System.out.println("예시 : 안녕하세요. 점심 식사는 하셨나요? 는 총 0~18 까지의 번호를 가지고 있습니다.");				
 				System.out.println("편집 : edit( 바꿀 문자열 시작 번호, 바꿀 문자열 끝 번호 + 1, \"변경할 문자열 입력\")");
 				System.out.println("실행 취소 : undo()  -  작업 전단계로 돌아갑니다.");
