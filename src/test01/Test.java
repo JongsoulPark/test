@@ -76,7 +76,7 @@ public class Test {
 							}
 							
 						}else {
-							System.out.println("조건의 개수가 맞지 않습니다. 조건들 사이에 콤마(,)를 입력해주세요");
+							System.out.println("조건의 개수가 맞지 않습니다. 조건을 확인해 주시고 조건들 사이에 콤마(,)를 입력해주세요");
 							String peek_message = undo_stack.peek();
 							System.out.println(peek_message);
 						
@@ -114,10 +114,11 @@ public class Test {
 				scn.close();
 				break;
 			
+			// 편집기 사용 방법에 대한 안내
 			}else if(inputText.equals("list()")) {
 				System.out.println("====================사용법====================");
 				System.out.println("문자열 번호 : 문자열 번호는 0부터 시작하며 특수문자와 띄어쓰기도 하나의 번호로 간주합니다.");
-				System.out.println("예시 : 안녕하세요. 점심 식사는 하셨나요? 는 총 0~18 까지의 번호를 가지고 있습니다.");				
+				System.out.println("예시 : 안녕하세요. 점심 식사는 하셨나요? 는 총 0 ~ 18 까지의 번호를 가지고 있습니다.");				
 				System.out.println("편집 : edit( 바꿀 문자열 시작 번호, 바꿀 문자열 끝 번호 + 1, \"변경할 문자열 입력\")");
 				System.out.println("실행 취소 : undo()  -  작업 전단계로 돌아갑니다.");
 				System.out.println("재실행 : redo()  -  실행 취소 전단계로 돌아갑니다.");
@@ -150,6 +151,7 @@ public class Test {
 			// 1번째 조건의 값이 문자열 길이의 값을 초과하는지 확인
 			try {
 				sb.replace(x, y, change_text);
+				
 				// undo() 실행 후 edit 실행 시 새롭게 편집하는 부분이기 때문에 재실행에 담겨있는 자료는 필요가 없음 따라서 edit시 재실행 스택을 확인하고 0보다 크면 삭제해준다 
 				if(redo_stack.size() > 0) {
 					for(int i = 0; i < redo_stack.size(); i++) {
